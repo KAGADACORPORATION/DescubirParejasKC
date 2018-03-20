@@ -13,7 +13,6 @@ public class VistaPrincipal extends JFrame {
 
 	/**
 	 * Launch the application.
-	 * CONTIENE CABECERA Y PANEL PRINCIPAL
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
