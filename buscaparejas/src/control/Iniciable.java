@@ -6,7 +6,7 @@ public interface Iniciable {
 	 * contiene los métodos privados: 
 	 * GenerarTablero(int fila, int columna),
 	 * RellenarTablero()crea una casilla por cada posicion del tablero y recibirá un número (referencia).
-	 * DesordenarCasillas() el tablero queda con las casillas desordenadas.
+	 * DesordenarCasillas() el tablero queda con las casillas desordenadas.,
 	 * 
 	 */
 void iniciarJuego();
