@@ -23,6 +23,7 @@ PanelJuego paneljuego;
 		//Asignar Filas y Columnas a la Logica
 		//crear botonera.
 		//añadir PanelJuego a PanelPrincipal
+		//crear ListenerJuego (tiene que recibir paneljuego y un nuevo comprobador)
 		//añadir ListenerJuego a Botones.
 		//Iniciador tiene que tener un un método "IniciarJuego" que tiene que recibir un Casting Dificultad del ComboBox getItemsSelected
 		//
