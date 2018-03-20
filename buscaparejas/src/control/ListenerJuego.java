@@ -11,7 +11,7 @@ import vista.PanelJuego;
 
 public class ListenerJuego implements ActionListener {
 	
-	ControlPrincipal controlprincipal;
+	Comprobador controlprincipal;
 	PanelJuego paneljuego;
 	JButton Primero;
 	JLabel Marcador;
