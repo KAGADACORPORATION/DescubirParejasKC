@@ -7,9 +7,11 @@ public interface Iniciable {
 	 * GenerarTablero(int fila, int columna),
 	 * RellenarTablero()crea una casilla por cada posicion del tablero y recibirá un número (referencia).
 	 * DesordenarCasillas() el tablero queda con las casillas desordenadas.,
-	 * 
+	 * @param ParaFilaYColumna Enum Dificultad que contiene un valor (.getValor)
+	 * que servira para las filas y las columnas
 	 */
-void iniciarJuego();
+
+void iniciarJuego(Dificultad ParaFilaYColumna);
 
 
 
