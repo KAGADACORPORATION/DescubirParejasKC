@@ -22,7 +22,7 @@ import java.awt.Color;
 public class PanelInicio extends JPanel {
 
 	/**
-	 * Create the panel. 
+	 * Create the panel. s
 	 * COMBOBOX, ETIQUETA Y BOTON JUGAR.
 	 */
 	public PanelInicio() {
