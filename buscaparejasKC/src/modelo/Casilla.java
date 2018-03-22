@@ -11,6 +11,10 @@ private int identificador;
 
 
 
+	public Casilla(int identificador) {
+		this.identificador = identificador;
+	}
+	
 	public boolean isVisible() {
 		return visible;
 	}
