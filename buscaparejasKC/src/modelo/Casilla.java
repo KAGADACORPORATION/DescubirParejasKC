@@ -6,15 +6,10 @@ private int identificador;
 
 
 
-
-//TODO crear constructor que asigne identificador
-
-
-
 	public Casilla(int identificador) {
-		this.identificador = identificador;
-	}
-	
+	super();
+	this.identificador = identificador;
+}
 	public boolean isVisible() {
 		return visible;
 	}
