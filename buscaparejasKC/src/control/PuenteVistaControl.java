@@ -1,8 +1,15 @@
 package control;
 
-public class PuenteVistaControl {
-Iniciador iniciador;
-ListenerInicio listenerinicio=new ListenerInicio(/*BotonJugar,Iniciador,PanelPrincipal,PanelInicio,PanelJuego*/); 
-//TODO Crear Constructor cuando la vista tenga Field todo lo necesario
+import vista.PanelInicio;
+import vista.VistaPrincipal;
+
+public class PuenteVistaControl extends VistaPrincipal{
+	private ListenerInicio listenerinicio;
+	
+	public PuenteVistaControl() {
+		super();
+		this.listenerinicio = new ListenerInicio(this.panelInicio,this.panelPrincipal);
+		this.panelInicio.getBtnJugar().addActionListener(listenerinicio);
+	}
 
 }

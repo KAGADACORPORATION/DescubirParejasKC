@@ -11,13 +11,15 @@ import vista.PanelJuego;
 
 public class ListenerJuego implements ActionListener {
 	
-	Comprobador comprobador= new Comprobador();
-	PanelJuego paneljuego;
-	JButton Primero;
-	JLabel Marcador;
+	private Comprobador comprobador= new Comprobador();
+	private PanelJuego paneljuego;
+	private JButton Primero;
 	
-//	TODO generar el constructor sin incluir primero ni comprobador
 	
+	public ListenerJuego(PanelJuego paneljuego) {
+		super();
+		this.paneljuego = paneljuego;
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -35,5 +37,30 @@ public class ListenerJuego implements ActionListener {
 		
 		
 	}
+
+	public Comprobador getComprobador() {
+		return comprobador;
+	}
+
+	public void setComprobador(Comprobador comprobador) {
+		this.comprobador = comprobador;
+	}
+
+	public PanelJuego getPaneljuego() {
+		return paneljuego;
+	}
+
+	public void setPaneljuego(PanelJuego paneljuego) {
+		this.paneljuego = paneljuego;
+	}
+
+	public JButton getPrimero() {
+		return Primero;
+	}
+
+	public void setPrimero(JButton primero) {
+		Primero = primero;
+	}
+
 
 }
