@@ -12,8 +12,9 @@ import java.awt.Font;
 
 public class VistaPrincipal extends JFrame {
 
-	protected JPanel contentPane;
+	protected JPanel vistaPrincipal;
 	protected JPanel panelPrincipal;
+	protected PanelInicio panelInicio;
 
 	/**
 	 * Launch the application.
@@ -37,18 +38,20 @@ public class VistaPrincipal extends JFrame {
 	public VistaPrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		vistaPrincipal = new JPanel();
+		vistaPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(vistaPrincipal);
+		vistaPrincipal.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblDescubrirParejas = new JLabel("Descubrir Parejas");
 		lblDescubrirParejas.setFont(new Font("Snap ITC", Font.PLAIN, 19));
 		lblDescubrirParejas.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPane.add(lblDescubrirParejas, BorderLayout.NORTH);
+		vistaPrincipal.add(lblDescubrirParejas, BorderLayout.NORTH);
 		
 		 panelPrincipal = new JPanel();
-		contentPane.add(panelPrincipal, BorderLayout.CENTER);
+		vistaPrincipal.add(panelPrincipal, BorderLayout.CENTER);
+		panelInicio = new PanelInicio();
+		panelPrincipal.add(panelInicio);
 	}
 
 }

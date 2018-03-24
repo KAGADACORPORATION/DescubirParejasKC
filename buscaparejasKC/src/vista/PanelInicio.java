@@ -21,6 +21,10 @@ import java.awt.Color;
 
 public class PanelInicio extends JPanel {
 
+	private JComboBox comboBox;
+	private JButton btnJugar;
+
+
 	/**
 	 * Create the panel. sa
 	 * COMBOBOX, ETIQUETA Y BOTON JUGAR.
@@ -58,7 +62,7 @@ public class PanelInicio extends JPanel {
 		gbc_lblNewLabel.gridy = 5;
 		add(lblNewLabel, gbc_lblNewLabel);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(Dificultad.values()));
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.anchor = GridBagConstraints.NORTH;
@@ -67,7 +71,7 @@ public class PanelInicio extends JPanel {
 		gbc_comboBox.gridy = 6;
 		add(comboBox, gbc_comboBox);
 		
-		JButton btnJugar = new JButton("JUGAR");
+		btnJugar = new JButton("JUGAR");
 		GridBagConstraints gbc_btnJugar = new GridBagConstraints();
 		gbc_btnJugar.anchor = GridBagConstraints.NORTH;
 		gbc_btnJugar.insets = new Insets(0, 0, 5, 5);
@@ -76,5 +80,20 @@ public class PanelInicio extends JPanel {
 		gbc_btnJugar.gridy = 6;
 		add(btnJugar, gbc_btnJugar);
 
+	}
+	public JComboBox getComboBox() {
+		return comboBox;
+	}
+
+	public void setComboBox(JComboBox comboBox) {
+		this.comboBox = comboBox;
+	}
+
+	public JButton getBtnJugar() {
+		return btnJugar;
+	}
+
+	public void setBtnJugar(JButton btnJugar) {
+		this.btnJugar = btnJugar;
 	}
 }
