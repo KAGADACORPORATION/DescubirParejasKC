@@ -37,18 +37,28 @@ public class ListenerJuego implements ActionListener {
 			if(primero!=null) {
 				ponerVisibleTrue(botonPulsado);
 				this.segundo=botonPulsado;
+				ponerImagenBoton(segundo);
 			}
 			if(segundo!=null) {
 				if(!comprobador.CompararCasilla(obtenerCasilla(primero), obtenerCasilla(segundo))) {
-					ponerVisibleFalse(primero);
-					ponerVisibleFalse(segundo);
+					try {
+						Thread.sleep(700);
+						ponerVisibleFalse(primero);
+						ponerVisibleFalse(segundo);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
+				quitarImagenBoton(primero);
+				quitarImagenBoton(segundo);
 				this.primero=null;
 				this.segundo=null;
 			}
 			else {
 				ponerVisibleTrue(botonPulsado);
 				this.primero=botonPulsado;
+				ponerImagenBoton(primero);
 			}
 		}
 		actualizarTablero();
