@@ -9,28 +9,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import javax.swing.BoxLayout;
 
 public class VistaPrincipal extends JFrame {
 
 	protected JPanel vistaPrincipal;
 	protected JPanel panelPrincipal;
 	protected PanelInicio panelInicio;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VistaPrincipal frame = new VistaPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -41,15 +26,17 @@ public class VistaPrincipal extends JFrame {
 		vistaPrincipal = new JPanel();
 		vistaPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(vistaPrincipal);
-		vistaPrincipal.setLayout(new BorderLayout(0, 0));
+		vistaPrincipal.setLayout(new BoxLayout(vistaPrincipal, BoxLayout.Y_AXIS));
 		
 		JLabel lblDescubrirParejas = new JLabel("Descubrir Parejas");
+		lblDescubrirParejas.setVerticalAlignment(SwingConstants.TOP);
+		vistaPrincipal.add(lblDescubrirParejas);
 		lblDescubrirParejas.setFont(new Font("Snap ITC", Font.PLAIN, 19));
 		lblDescubrirParejas.setHorizontalAlignment(SwingConstants.CENTER);
-		vistaPrincipal.add(lblDescubrirParejas, BorderLayout.NORTH);
 		
-		 panelPrincipal = new JPanel();
-		vistaPrincipal.add(panelPrincipal, BorderLayout.CENTER);
+		panelPrincipal = new JPanel();
+		vistaPrincipal.add(panelPrincipal);
+		panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.X_AXIS));
 		panelInicio = new PanelInicio();
 		panelPrincipal.add(panelInicio);
 	}

@@ -3,19 +3,24 @@ package vista;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 public class PanelJuego extends JPanel {
 	private JLabel aciertos;
 	private JLabel tiempo;
 	private JPanel panelBotones;
 	private JPanel panelMarcador;
+	private JButton botones [][];
+
 	/**
 	 * Create the panel.
 	 * CONTIENE LOS BOTONES Y MARCADORES.
@@ -64,20 +69,23 @@ public class PanelJuego extends JPanel {
 		tiempo.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panelMarcador.add(tiempo);
 		
+		
 		panelBotones = new JPanel();
 		if(filas !=0 && columnas !=0) {
 			GridLayout gridBotones = new GridLayout();
 			gridBotones.setRows(filas);
 			gridBotones.setColumns(columnas);
 			panelBotones.setLayout(gridBotones);
+			this.botones= new JButton[filas][columnas];
 			for (int i = 0; i < filas; i++) {
 				for (int j = 0; j < columnas; j++) {
-					JButton boton = new JButton(" ");
-					boton.setName(i+" "+j);
-					panelBotones.add(boton);
+					this.botones[i][j] = new JButton();
+					this.botones[i][j].setName(i+" "+j);
+					panelBotones.add(botones[i][j]);
 				}
 			}
-			add(panelBotones,BorderLayout.CENTER);
+			
+			add(panelBotones);
 		}
 		
 	}
@@ -113,6 +121,12 @@ public class PanelJuego extends JPanel {
 	public void setPanelMarcador(JPanel panelMarcador) {
 		this.panelMarcador = panelMarcador;
 	}
-	
-	
+
+	public JButton[][] getBotones() {
+		return botones;
+	}
+
+	public void setBotones(JButton botones[][]) {
+		this.botones = botones;
+	}
 }

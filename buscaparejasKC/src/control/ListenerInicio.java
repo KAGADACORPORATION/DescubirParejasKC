@@ -33,7 +33,12 @@ public class ListenerInicio implements ActionListener {
 		this.paneljuego=new PanelJuego(iniciador.getTablero().getCasilla().length, iniciador.getTablero().getCasilla().length);
 		this.panelPrincipal.remove(panelinicio);
 		this.panelPrincipal.add(paneljuego);
-		//añadir ListenerJuego a Botones.
+		this.listenerJuego= new ListenerJuego(paneljuego,iniciador.getTablero());
+		for (int i = 0; i < iniciador.getTablero().getCasilla().length; i++) {
+			for (int j = 0; j < iniciador.getTablero().getCasilla()[i].length; j++) {
+				paneljuego.getBotones()[i][j].addActionListener(listenerJuego);
+			}
+		}
 		SwingUtilities.updateComponentTreeUI(panelPrincipal);
 	}
 	
