@@ -16,7 +16,7 @@ public class ComprobadorTest {
 	@Test
 	public void testCompararCasilla() {
 		
-		Comprobador comprobador = new Comprobador();
+		Comprobador comprobador = new Comprobador(null);
 		
 		Casilla igualUno = new Casilla(1);
 		igualUno.setVisible(true);
@@ -33,7 +33,7 @@ public class ComprobadorTest {
 
 	@Ignore
 	void testComprobarGanador() {
-		Comprobador comprobador = new Comprobador();
+		
 		
 		Casilla visible = new Casilla(1);
 		visible.setVisible(true);
@@ -57,10 +57,14 @@ public class ComprobadorTest {
 		Tablero tableroNoGanadorTres = new Tablero(0,0);
 		tableroGanador.setCasilla(noGanadorTres);
 		
-		assertTrue(comprobador.ComprobarGanador(tableroGanador));
-		assertFalse(comprobador.ComprobarGanador(tableroNoGanadorUno));
-		assertFalse(comprobador.ComprobarGanador(tableroNoGanadorDos));
-		assertFalse(comprobador.ComprobarGanador(tableroNoGanadorTres));
+		Comprobador comprobador = new Comprobador(tableroGanador);
+		assertTrue(comprobador.ComprobarGanador());
+		comprobador = new Comprobador(tableroNoGanadorUno);
+		assertFalse(comprobador.ComprobarGanador());
+		comprobador = new Comprobador(tableroNoGanadorDos);
+		assertFalse(comprobador.ComprobarGanador());
+		comprobador = new Comprobador(tableroNoGanadorTres);
+		assertFalse(comprobador.ComprobarGanador());
 	}
 
 }

@@ -1,7 +1,7 @@
 package control;
 
 public enum Dificultad {
-	facil(6), medio(8), dificil(10);
+	facil(4), medio(6), dificil(8);
 	private int valor;
 
 	private Dificultad(int valor) {

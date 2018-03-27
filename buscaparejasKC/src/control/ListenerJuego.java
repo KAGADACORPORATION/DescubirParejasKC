@@ -1,66 +1,138 @@
 package control;
 
+import java.awt.PageAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.ActionMapUIResource;
+import javax.swing.text.IconView;
 
+import modelo.Casilla;
 import modelo.Tablero;
 import vista.PanelJuego;
 
 public class ListenerJuego implements ActionListener {
 	
-	private Comprobador comprobador= new Comprobador();
+	private Comprobador comprobador;
 	private PanelJuego paneljuego;
-	private JButton Primero;
+	private JButton primero;
+	private JButton segundo;
+
 	
-	
-	public ListenerJuego(PanelJuego paneljuego) {
+	public ListenerJuego(PanelJuego paneljuego, Tablero tablero) {
 		super();
 		this.paneljuego = paneljuego;
+		this.comprobador = new Comprobador(tablero);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		/* TODO 
-		 * si el boton no está visible,pregunta si el boton Primero está nulo.
-		 * en caso de NULO, asignar el casting a Jbuton de "e" a "Primero".
-		 * hacer que en comprobador la casilla sea Visible(visible=true).
-		 * Si no es NULO, comparamos(usando comprobador) el casting con boton "Primero" y si son iguales se quedan reveladas, 
-		 * si  son distintas Pausamos un tiempo determinado y cambiamos a no visibles Primero y Casting
-		 * ActualizarTablero();
-		 * colocar Primero NULL(dentro del if cuando el primero no es NULL)
-		 * comprobar ganador (usando comprobador)  
-		 * si ganador añadir panel final al padre de panelJuego y remover panelJuego
-		 */
+		JButton botonPulsado = ((JButton) e.getSource());
+		if(!comprobarVisible(botonPulsado)) {
+			
+			if(primero!=null) {
+				ponerVisibleTrue(botonPulsado);
+				this.segundo=botonPulsado;
+			}
+			if(segundo!=null) {
+				if(!comprobador.CompararCasilla(obtenerCasilla(primero), obtenerCasilla(segundo))) {
+					ponerVisibleFalse(primero);
+					ponerVisibleFalse(segundo);
+				}
+				this.primero=null;
+				this.segundo=null;
+			}
+			else {
+				ponerVisibleTrue(botonPulsado);
+				this.primero=botonPulsado;
+			}
+		}
+		actualizarTablero();
+	}
+
+	private void quitarImagenBoton(JButton boton) {
+		ImageIcon icono = new ImageIcon("img/vaciaParejas.png");
+		boton.setIcon(icono);
+		boton.validate();
+		boton.repaint();
 		
-		
 	}
 
-	public Comprobador getComprobador() {
-		return comprobador;
+	private void ponerImagenBoton(JButton boton) {
+		ImageIcon icono = new ImageIcon(generarRutaImagen(boton));
+		boton.setIcon(icono);
+		boton.validate();
+		boton.repaint();
 	}
 
-	public void setComprobador(Comprobador comprobador) {
-		this.comprobador = comprobador;
+	private Casilla obtenerCasilla(JButton boton) {
+		return comprobador.getTablero().getCasilla()[obtenerPosicionX(boton)][obtenerPosicionY(boton)];
 	}
 
-	public PanelJuego getPaneljuego() {
-		return paneljuego;
+	/**
+	 * @param botonPulsado
+	 */
+	private void ponerVisibleFalse(JButton botonPulsado) {
+		this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)].setVisible(false);
 	}
 
-	public void setPaneljuego(PanelJuego paneljuego) {
-		this.paneljuego = paneljuego;
-	}
-
-	public JButton getPrimero() {
-		return Primero;
-	}
-
-	public void setPrimero(JButton primero) {
-		Primero = primero;
+	/**
+	 * @param botonPulsado
+	 */
+	private void ponerVisibleTrue(JButton botonPulsado) {
+		this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)].setVisible(true);
 	}
 
 
+	/**
+	 * @param botonPulsado
+	 * @return
+	 */
+	private boolean comprobarVisible(JButton botonPulsado) {
+		return this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)].isVisible();
+	}
+	
+	private void actualizarTablero() {
+		for (int i = 0; i < comprobador.getTablero().getCasilla().length; i++) {
+			for (int j = 0; j < comprobador.getTablero().getCasilla().length; j++) {
+				this.paneljuego.getBotones()[i][j].removeAll();
+				if(this.comprobador.getTablero().getCasilla()[i][j].isVisible()) {
+					this.paneljuego.getBotones()[i][j].setIcon(new ImageIcon(generarRutaImagen(this.paneljuego.getBotones()[i][j])));
+					
+				}
+				else{
+					ImageIcon imagenVacia = new ImageIcon("img/vaciaParejas.png");
+					this.paneljuego.getBotones()[i][j].setIcon(imagenVacia);
+				}
+				 
+			}
+		}
+	}
+
+	private String generarRutaImagen(JButton boton) {
+		return "img/imagen"+comprobador.getTablero().getCasilla()[obtenerPosicionX(boton)][obtenerPosicionY(boton)].getIdentificador()+".jpg";
+	}
+
+
+	private int obtenerPosicionX(JButton boton) {
+		int posicionEspacio=String.valueOf(boton.getName()).indexOf(' ');
+		return Integer.valueOf(String.valueOf(boton.getName()).substring(0,posicionEspacio));
+	}
+
+	private int obtenerPosicionY(JButton boton) {
+		int posicionEspacio=String.valueOf(boton.getName()).indexOf(' ');
+		return Integer.valueOf(String.valueOf(boton.getName()).substring(posicionEspacio+1));
+	}
+
+	public JButton getSegundo() {
+		return segundo;
+	}
+
+	public void setSegundo(JButton segundo) {
+		this.segundo = segundo;
+	}
 }

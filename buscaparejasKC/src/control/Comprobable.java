@@ -14,9 +14,8 @@ Boolean CompararCasilla(Casilla casillaUno,Casilla casillaDos);
 
 
 /**
- * recibe un tablero y si todas las casillas tienen visible a true retorna true
- * @param tablero es un array de casillas
+ * recorre el tablero y si todas las casillas tienen visible a true retorna true
  * @return true si todas casillas visibles false en caso contrario
  */
-Boolean ComprobarGanador(Tablero tablero);
+Boolean ComprobarGanador();
 }
