@@ -1,9 +1,12 @@
 package control;
 
-import vista.PanelInicio;
 import vista.VistaPrincipal;
 
 public class PuenteVistaControl extends VistaPrincipal{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ListenerInicio listenerinicio;
 	
 	public PuenteVistaControl() {

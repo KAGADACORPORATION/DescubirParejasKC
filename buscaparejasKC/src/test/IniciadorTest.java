@@ -1,14 +1,9 @@
 package test;
 
-
-
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-
 import control.Dificultad;
 import control.Iniciador;
-import modelo.Tablero;
 
 public class IniciadorTest {
 
