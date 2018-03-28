@@ -30,6 +30,7 @@ public class VistaPrincipal extends JFrame {
 		vistaPrincipal.setLayout(new BoxLayout(vistaPrincipal, BoxLayout.Y_AXIS));
 		
 		JLabel lblDescubrirParejas = new JLabel("Descubrir Parejas");
+		lblDescubrirParejas.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblDescubrirParejas.setVerticalAlignment(SwingConstants.TOP);
 		vistaPrincipal.add(lblDescubrirParejas);
 		lblDescubrirParejas.setFont(new Font("Snap ITC", Font.PLAIN, 19));
