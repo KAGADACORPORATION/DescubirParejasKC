@@ -1,7 +1,6 @@
 package control;
 
 import modelo.Casilla;
-import modelo.Tablero;
 
 public interface Comprobable {
 /**

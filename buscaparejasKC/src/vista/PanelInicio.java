@@ -21,12 +21,16 @@ import java.awt.Color;
 
 public class PanelInicio extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JComboBox comboBox;
 	private JButton btnJugar;
 
 
 	/**
-	 * Create the panel. sa
+	 * Create the panel.
 	 * COMBOBOX, ETIQUETA Y BOTON JUGAR.
 	 */
 	public PanelInicio() {

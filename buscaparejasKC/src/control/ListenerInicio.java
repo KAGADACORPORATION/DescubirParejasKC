@@ -1,5 +1,6 @@
 package control;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,7 +33,7 @@ public class ListenerInicio implements ActionListener {
 		this.iniciador.iniciarJuego((Dificultad) this.panelinicio.getComboBox().getSelectedItem());
 		this.paneljuego=new PanelJuego(iniciador.getTablero().getCasilla().length, iniciador.getTablero().getCasilla().length);
 		this.panelPrincipal.remove(panelinicio);
-		this.panelPrincipal.add(paneljuego);
+		this.panelPrincipal.add(paneljuego,BorderLayout.CENTER);
 		this.listenerJuego= new ListenerJuego(paneljuego,iniciador.getTablero());
 		for (int i = 0; i < iniciador.getTablero().getCasilla().length; i++) {
 			for (int j = 0; j < iniciador.getTablero().getCasilla()[i].length; j++) {
