@@ -6,8 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import modelo.Casilla;
 import modelo.Tablero;
+import vista.PanelFinal;
 import vista.PanelJuego;
 
 public class ListenerJuego implements ActionListener {
@@ -16,6 +20,8 @@ public class ListenerJuego implements ActionListener {
 	private PanelJuego paneljuego;
 	private JButton primero;
 	private JButton segundo;
+	private PanelFinal panelFinal;
+	private ListenerFinJuego listenerFinJuego;
 
 	
 	public ListenerJuego(PanelJuego paneljuego, Tablero tablero) {
@@ -52,6 +58,22 @@ public class ListenerJuego implements ActionListener {
 			}
 		}
 		actualizarTablero();
+		if(this.comprobador.ComprobarGanador()) {
+			finalizarJuego();
+		}
+	}
+
+	/**
+	 * remueve PanelJuego y añado PanelFinal
+	 */
+	private void finalizarJuego() {
+		JPanel padre = (JPanel) paneljuego.getParent();
+		padre.remove(paneljuego);
+		panelFinal = new PanelFinal(this.paneljuego.getPanelParaBotones().getWidth(),this.paneljuego.getPanelParaBotones().getHeight()-100);
+		padre.add(panelFinal);
+		SwingUtilities.updateComponentTreeUI(padre);
+		listenerFinJuego = new ListenerFinJuego();
+		panelFinal.getBotonVolverJugar().addActionListener(listenerFinJuego);
 	}
 
 
@@ -120,7 +142,7 @@ public class ListenerJuego implements ActionListener {
 
 	
 	private ImageIcon createScaledIcon(ImageIcon Imagen, int width, int height) {
-		return new ImageIcon(Imagen.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+		return new ImageIcon(Imagen.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 
 	}
 	private String generarRutaImagen(JButton boton) {
@@ -137,11 +159,20 @@ public class ListenerJuego implements ActionListener {
 		int posicionEspacio=String.valueOf(boton.getName()).indexOf(' ');
 		return Integer.valueOf(String.valueOf(boton.getName()).substring(posicionEspacio+1));
 	}
+	
 	public JButton getSegundo() {
 		return segundo;
 	}
 
 	public void setSegundo(JButton segundo) {
 		this.segundo = segundo;
+	}
+
+	public ListenerFinJuego getListenerFinJuego() {
+		return listenerFinJuego;
+	}
+
+	public void setListenerFinJuego(ListenerFinJuego listenerFinJuego) {
+		this.listenerFinJuego = listenerFinJuego;
 	}
 }
