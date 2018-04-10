@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import modelo.Casilla;
 import modelo.Tablero;
@@ -15,7 +16,7 @@ import vista.PanelFinal;
 import vista.PanelJuego;
 
 public class ListenerJuego implements ActionListener {
-	
+
 	private Comprobador comprobador;
 	private PanelJuego paneljuego;
 	private JButton primero;
@@ -23,7 +24,6 @@ public class ListenerJuego implements ActionListener {
 	private PanelFinal panelFinal;
 	private ListenerFinJuego listenerFinJuego;
 
-	
 	public ListenerJuego(PanelJuego paneljuego, Tablero tablero) {
 		super();
 		this.paneljuego = paneljuego;
@@ -33,49 +33,60 @@ public class ListenerJuego implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton botonPulsado = ((JButton) e.getSource());
-		if(!comprobarVisible(botonPulsado)) {
-			
-			if(primero!=null) {
+		if (!comprobarVisible(botonPulsado)) {
+
+			if (primero != null) {
 				ponerVisibleTrue(botonPulsado);
-				this.segundo=botonPulsado;				
+				this.segundo = botonPulsado;
+			} else {
+				ponerVisibleTrue(botonPulsado);
+				this.primero = botonPulsado;
 			}
-			if(segundo!=null) {
-				if(!comprobador.CompararCasilla(obtenerCasilla(primero), obtenerCasilla(segundo))) {
-					try {
-						Thread.sleep(700);
-						ponerVisibleFalse(primero);
-						ponerVisibleFalse(segundo);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
+			//aqui se crea un objeto que debe implementar el metodo doinbackogrund
+			//esto se hara cuando siempre cuando se llamada al metodo execute del objeto worker
+			//como funciona como otro hilo, la secuencia de ordenes de este listener se acaban y dan paso a la
+			//actualizacion del ui (por eso hay dos actulizarTablero)
+			SwingWorker worker = new SwingWorker<Object, Object>() {
+
+				@Override
+				protected Object doInBackground() throws Exception {
+					if (!comprobador.CompararCasilla(obtenerCasilla(primero), obtenerCasilla(segundo))) {
+						try {
+							Thread.sleep(700);
+							ponerVisibleFalse(primero);
+							ponerVisibleFalse(segundo);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
 					}
+					primero = null;
+					segundo = null;
+					actualizarTablero();
+					return null;
 				}
-				this.primero=null;
-				this.segundo=null;
+
+			};
+			actualizarTablero();
+			worker.execute();
+			if (this.comprobador.ComprobarGanador()) {
+				finalizarJuego();
 			}
-			else {
-				ponerVisibleTrue(botonPulsado);
-				this.primero=botonPulsado;
-			}
-		}
-		actualizarTablero();
-		if(this.comprobador.ComprobarGanador()) {
-			finalizarJuego();
 		}
 	}
 
 	/**
-	 * remueve PanelJuego y añado PanelFinal
+	 * remueve PanelJuego y aï¿½ado PanelFinal
 	 */
 	private void finalizarJuego() {
 		JPanel padre = (JPanel) paneljuego.getParent();
 		padre.remove(paneljuego);
-		panelFinal = new PanelFinal(this.paneljuego.getPanelParaBotones().getWidth(),this.paneljuego.getPanelParaBotones().getHeight()-100);
+		panelFinal = new PanelFinal(this.paneljuego.getPanelParaBotones().getWidth(),
+				this.paneljuego.getPanelParaBotones().getHeight() - 100);
 		padre.add(panelFinal);
 		SwingUtilities.updateComponentTreeUI(padre);
 		listenerFinJuego = new ListenerFinJuego();
 		panelFinal.getBotonVolverJugar().addActionListener(listenerFinJuego);
 	}
-
 
 	private Casilla obtenerCasilla(JButton boton) {
 		return comprobador.getTablero().getCasilla()[obtenerPosicionX(boton)][obtenerPosicionY(boton)];
@@ -85,40 +96,43 @@ public class ListenerJuego implements ActionListener {
 	 * @param botonPulsado
 	 */
 	private void ponerVisibleFalse(JButton botonPulsado) {
-		this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)].setVisible(false);
+		this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)]
+				.setVisible(false);
 	}
 
 	/**
 	 * @param botonPulsado
 	 */
 	private void ponerVisibleTrue(JButton botonPulsado) {
-		this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)].setVisible(true);
+		this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)]
+				.setVisible(true);
 	}
-
 
 	/**
 	 * @param botonPulsado
 	 * @return
 	 */
 	private boolean comprobarVisible(JButton botonPulsado) {
-		return this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(botonPulsado)].isVisible();
+		return this.comprobador.getTablero().getCasilla()[obtenerPosicionX(botonPulsado)][obtenerPosicionY(
+				botonPulsado)].isVisible();
 	}
-	
+
 	/**
-	 * actualiza la botonera creando iconos si esta visible o una imagen vacia si no esta visible
+	 * actualiza la botonera creando iconos si esta visible o una imagen vacia
+	 * si no esta visible
 	 */
 	private void actualizarTablero() {
 		for (int i = 0; i < comprobador.getTablero().getCasilla().length; i++) {
 			for (int j = 0; j < comprobador.getTablero().getCasilla()[i].length; j++) {
-				if(this.comprobador.getTablero().getCasilla()[i][j].isVisible()) {
+				if (this.comprobador.getTablero().getCasilla()[i][j].isVisible()) {
 					ImageIcon imagenBoton = new ImageIcon(generarRutaImagen(this.paneljuego.getBotones()[i][j]));
-					imagenBoton=createScaledIcon(imagenBoton, obtenerAnchoBoton(i),obtenerAlturaBoton());
+					imagenBoton = createScaledIcon(imagenBoton, obtenerAnchoBoton(i), obtenerAlturaBoton());
 					this.paneljuego.getBotones()[i][j].setIcon(imagenBoton);
-					this.paneljuego.getBotones()[i][j].setMaximumSize(new Dimension(obtenerAnchoBoton(i),obtenerAlturaBoton()));
-				}
-				else{
+					this.paneljuego.getBotones()[i][j]
+							.setMaximumSize(new Dimension(obtenerAnchoBoton(i), obtenerAlturaBoton()));
+				} else {
 					ImageIcon imagenVacia = new ImageIcon("img/vaciaParejas.png");
-					imagenVacia=createScaledIcon(imagenVacia, obtenerAnchoBoton(i),obtenerAlturaBoton());
+					imagenVacia = createScaledIcon(imagenVacia, obtenerAnchoBoton(i), obtenerAlturaBoton());
 					this.paneljuego.getBotones()[i][j].setIcon(imagenVacia);
 				}
 			}
@@ -129,7 +143,7 @@ public class ListenerJuego implements ActionListener {
 	 * @return
 	 */
 	private int obtenerAlturaBoton() {
-		return this.paneljuego.getPanelParaBotones().getHeight()/(paneljuego.getBotones().length+2);
+		return this.paneljuego.getPanelParaBotones().getHeight() / (paneljuego.getBotones().length + 2);
 	}
 
 	/**
@@ -137,29 +151,29 @@ public class ListenerJuego implements ActionListener {
 	 * @return
 	 */
 	private int obtenerAnchoBoton(int i) {
-		return this.paneljuego.getPanelParaBotones().getWidth()/(paneljuego.getBotones()[i].length+2);
+		return this.paneljuego.getPanelParaBotones().getWidth() / (paneljuego.getBotones()[i].length + 2);
 	}
 
-	
 	private ImageIcon createScaledIcon(ImageIcon Imagen, int width, int height) {
 		return new ImageIcon(Imagen.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 
 	}
+
 	private String generarRutaImagen(JButton boton) {
-		return "img/imagen"+comprobador.getTablero().getCasilla()[obtenerPosicionX(boton)][obtenerPosicionY(boton)].getIdentificador()+".jpg";
+		return "img/imagen" + comprobador.getTablero().getCasilla()[obtenerPosicionX(boton)][obtenerPosicionY(boton)]
+				.getIdentificador() + ".jpg";
 	}
 
-
 	private int obtenerPosicionX(JButton boton) {
-		int posicionEspacio=String.valueOf(boton.getName()).indexOf(' ');
-		return Integer.valueOf(String.valueOf(boton.getName()).substring(0,posicionEspacio));
+		int posicionEspacio = String.valueOf(boton.getName()).indexOf(' ');
+		return Integer.valueOf(String.valueOf(boton.getName()).substring(0, posicionEspacio));
 	}
 
 	private int obtenerPosicionY(JButton boton) {
-		int posicionEspacio=String.valueOf(boton.getName()).indexOf(' ');
-		return Integer.valueOf(String.valueOf(boton.getName()).substring(posicionEspacio+1));
+		int posicionEspacio = String.valueOf(boton.getName()).indexOf(' ');
+		return Integer.valueOf(String.valueOf(boton.getName()).substring(posicionEspacio + 1));
 	}
-	
+
 	public JButton getSegundo() {
 		return segundo;
 	}
